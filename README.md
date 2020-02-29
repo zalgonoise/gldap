@@ -33,6 +33,10 @@ cp *.key stunnel.key
 
 The `keys` folder is the folder attached to the container holding the certificates. It should be linked to the `/data` folder in the container.
 
+Alternatively, you can mount these files individually, renaming them inside the container to:
+- `/data/stunnel.crt`
+- `/data/stunnel.key`
+
 Finally define the following environment variables when starting the container:
 
 ```
@@ -55,6 +59,21 @@ docker run --rm -ti \
     zalgonoise/gldap:latest \
     $LDAP_FILTER
 ```
+
+If you prefer to add the .crt/.key combination individually:
+
+```bash
+docker run --rm -ti \
+    --name gldap \
+    -v `pwd`/keys/Google_20YY_MM_DD_XXXXX.crt:/data/stunnel.crt:ro \
+    -v `pwd`/keys/Google_20YY_MM_DD_XXXXX.key:/data/stunnel.key:ro \
+    -e LDAP_USER=$LDAP_USER \
+    -e LDAP_PASS=$LDAP_PASS \
+    -e LDAP_BASESEARCH=$LDAP_BASESEARCH \
+    zalgonoise/gldap:latest \
+    $LDAP_FILTER
+```
+
 
 You will be returned an output of the STunnel service, followed by the result of your LDAP query.
 
