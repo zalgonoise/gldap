@@ -8,7 +8,7 @@
 
 A simple and light Docker image for querying G Suite domains via Secure LDAP.
 
-Google G Suite LDAP queries can be performed with OpenLDAP and STunnel, which are the sole tenantes of this image.
+Google G Suite LDAP queries can be performed with OpenLDAP and STunnel, which are the sole tenants of this image.
 
 The purpose is to be able to query and test your LDAP queries, in an easy and quick way - without ever leaving crums behind.
 
