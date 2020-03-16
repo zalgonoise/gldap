@@ -1,0 +1,16 @@
+before_script:
+    - docker info
+
+build_image:
+    script:
+        - docker build -t gldap-testing:${CI_BUILD_VERSION:-`date +%y%m%d%H%M%S`} .
+
+exec_image_obj:
+    script:
+        - docker run --rm -ti -v `pwd`/keys:/data/stunnel -e LDAP_USER=$LDAP_USER -e LDAP_PASS=$LDAP_PASS -e LDAP_BASESEARCH=$LDAP_BASESEARCH gldap-testing:${CI_BUILD_VERSION:-`date +%y%m%d%H%M%S`} "(objectClass=*)"
+
+
+exec_image_uid:
+    script:
+        - docker run --rm -ti -v `pwd`/keys:/data/stunnel -e LDAP_USER=$LDAP_USER -e LDAP_PASS=$LDAP_PASS -e LDAP_BASESEARCH=$LDAP_BASESEARCH gldap-testing:${CI_BUILD_VERSION:-`date +%y%m%d%H%M%S`} "(uid=root)"
+
