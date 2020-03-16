@@ -8,7 +8,7 @@
 
 A simple and light Docker image for querying G Suite domains via Secure LDAP.
 
-Google G Suite LDAP queries can be performed with OpenLDAP and STunnel, which are the sole tenantes of this image.
+Google G Suite LDAP queries can be performed with OpenLDAP and STunnel, which are the sole tenants of this image.
 
 The purpose is to be able to query and test your LDAP queries, in an easy and quick way - without ever leaving crums behind.
 
@@ -76,6 +76,26 @@ docker run --rm -ti \
 
 
 You will be returned an output of the STunnel service, followed by the result of your LDAP query.
+
+### Debug Mode
+
+Running queries in OpenLDAP debug mode (by attaching the flag `-d5` to the `ldapsearch` command) can be done in through the `LDAP_FILTER` environment variable or provided as the first argument to the container:
+
+
+```bash
+docker run --rm -ti \
+    --name gldap \
+    -v `pwd`/keys/Google_20YY_MM_DD_XXXXX.crt:/data/stunnel.crt:ro \
+    -v `pwd`/keys/Google_20YY_MM_DD_XXXXX.key:/data/stunnel.key:ro \
+    -e LDAP_USER=$LDAP_USER \
+    -e LDAP_PASS=$LDAP_PASS \
+    -e LDAP_BASESEARCH=$LDAP_BASESEARCH \
+    zalgonoise/gldap:latest \
+    -d5 "objectClass=*"
+```
+
+This action will add the `-d5` flag to `ldapsearch`, dumping the debug output for your query.
+
 
 
 ~ ZalgoNoise ~ 2020 ~ 
