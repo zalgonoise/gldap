@@ -1,3 +1,5 @@
-keys/*.crt
-keys/*.key
-keys/*.pem
+test/*.crt
+test/*.key
+test/*.pem
+test/*.zip
+test/*.env

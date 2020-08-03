@@ -3,9 +3,7 @@
 # Create configuration file for STunnel
 # Defaults to Google's G Suite LDAP parameters
 
-cd /etc/stunnel
-
-cat << EOF > stunnel.conf
+cat << EOF > /etc/stunnel/stunnel.conf
 foreground = yes
 
 setuid = stunnel
@@ -34,31 +32,32 @@ fi
 
 cd /data
 
+# Extracts contents from .zip file if provided
+
+if [ -f /data/*.zip ]
+then 
+    unzip /data/*.zip 
+fi
+
+
 # Expects certificate in the /data directory
 # Generates new crt/key if they aren't there
 
-if ! [ -f /data/stunnel.crt ]
+if ! [ -f /data/*.crt ] || ! [ -f /data/*.key ]
 then
     openssl req -x509 -nodes -newkey rsa:2048 -days 3650 -subj '/CN=stunnel' \
                 -keyout stunnel.key -out stunnel.crt
     chmod 600 stunnel.pem
+else 
+    mv /data/*.crt /data/stunnel.crt
+    mv /data/*.key /data/stunnel.key
 fi
 
 
 # Pushes default config from /etc/stunnel/stunnel.conf
 # Unless it's specified when the container is ran (as a parameter)
-# e.g.: docker run \
-#       -dit -v /dir:/data \
-#       -p 1636:1636 --link ldap \
-#       zalgonoise/gstunnel:1.0 /data/stunnel.conf
 
 
-
-    sh -c stunnel /etc/stunnel/stunnel.conf &
-    sleep 2
-    #if [ $# -eq 0 ]
-    #then
-    #    ldapsearch -H ldap://localhost:1636 -D ${LDAP_USER:-'user'} -w ${LDAP_PASS:-'pass'} -b ${LDAP_BASESEARCH:-'dc=ldaptest,dc=com'} -s sub -a always -z 1000
-    #else
-        ldapsearch -H ldap://localhost:1636 -D ${LDAP_USER:-'user'} -w ${LDAP_PASS:-'pass'} -b ${LDAP_BASESEARCH:-'dc=ldaptest,dc=com'} -s sub -a always -z 1000 $@
-    #fi
+sh -c stunnel /etc/stunnel/stunnel.conf &
+sleep 2
+ldapsearch -H ldap://localhost:1636 -D ${LDAP_USER:-'user'} -w ${LDAP_PASS:-'pass'} -b ${LDAP_BASESEARCH:-'dc=ldaptest,dc=com'} -s sub -a always -z 1000 $@

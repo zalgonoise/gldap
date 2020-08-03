@@ -60,6 +60,28 @@ docker run --rm -ti \
     $LDAP_FILTER
 ```
 
+You can also use `--env-file` and populate the provided template:
+
+```bash
+docker run --rm -ti \
+    --name gldap \
+    -v `pwd`/keys:/data \
+    --env-file `pwd`/secrets.env \
+    zalgonoise/gldap:latest
+```
+
+Lastly, the containter supports the `unzip` action, so you can provide the `.zip` file directly:
+
+```bash
+docker run --rm -ti \
+    --name gldap \
+    -v ~/Downloads/Google_2023_02_04_48611.zip:/data/Google.zip \
+    --env-file `pwd`/secrets.env \
+    zalgonoise/gldap:latest
+
+```
+
+
 If you prefer to add the .crt/.key combination individually:
 
 ```bash
