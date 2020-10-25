@@ -35,8 +35,8 @@ cd /data
 # Extracts contents from .zip file if provided
 
 if [ -f /data/*.zip ]
-then 
-    unzip /data/*.zip 
+then
+    unzip /data/*.zip
 fi
 
 
@@ -48,9 +48,9 @@ then
     openssl req -x509 -nodes -newkey rsa:2048 -days 3650 -subj '/CN=stunnel' \
                 -keyout stunnel.key -out stunnel.crt
     chmod 600 stunnel.pem
-else 
-    mv /data/*.crt /data/stunnel.crt
-    mv /data/*.key /data/stunnel.key
+else
+    mv -f /data/*.crt /data/stunnel.crt
+    mv -f /data/*.key /data/stunnel.key
 fi
 
 
