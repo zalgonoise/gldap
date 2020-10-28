@@ -1,5 +1,8 @@
 # gldap
 
+![CI](https://github.com/ZalgoNoise/gldap/workflows/CI/badge.svg)
+
+__________
 
 
 
